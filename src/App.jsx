@@ -94,7 +94,6 @@ export default function App() {
   function handleNoteClick(char) {
     if (!selectedCell) return
     const { page, col, row } = selectedCell
-    if (activeSlot === 'note2' && !pages[page][col].cells[row].note1) return
     setPages(prev => {
       const next = prev.map((pageColumns, pIdx) =>
         pIdx === page ? clonePage(pageColumns) : pageColumns

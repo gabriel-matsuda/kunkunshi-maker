@@ -32,8 +32,8 @@ export default function NoteSelector({ activeSlot, onSlotChange, onNoteClick, on
         <button
           className={`slot-btn ${activeSlot === 'note2' ? 'active' : ''}`}
           onClick={() => onSlotChange('note2')}
-          disabled={!hasNote1}
-          title={!hasNote1 ? t('selectCellFirst') : t('halfTimeHint')}
+          disabled={!selectedCell}
+          title={!selectedCell ? t('selectCellFirst') : t('halfTimeHint')}
         >
           {t('secondNote')} <span className="slot-hint">({t('halfTime')})</span>
         </button>
