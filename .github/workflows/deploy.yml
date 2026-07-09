@@ -21,6 +21,8 @@ jobs:
 
       - run: npm install
       - run: npm run build
+        env:
+          VITE_GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
