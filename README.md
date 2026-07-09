@@ -82,4 +82,16 @@ npm run preview   # serve the production build locally
 
 ---
 
+---
+
+## Open Source
+
+This project is free and open source under the [MIT License](LICENSE).
+
+You are welcome to copy, modify, and distribute this code — for personal use, to build your own tools, or anything else. No permission needed.
+
+Contributions are warmly welcomed! Whether it's a bug report, a feature idea, a translation, or a pull request, feel free to open an issue or PR on GitHub.
+
+---
+
 *Built with love for the music of the Ryukyu Islands. 島唄を楽しんでください！*
