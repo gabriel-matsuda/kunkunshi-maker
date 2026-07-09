@@ -1,0 +1,770 @@
+/* ── App shell ── */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  gap: 0;
+}
+
+.sticky-ui {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ── Toolbar ── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 20px;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  flex-wrap: wrap;
+}
+
+.toolbar-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #cba6f7;
+  font-family: var(--note-font);
+  white-space: nowrap;
+}
+
+.toolbar-fields {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.toolbar-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  color: #a6adc8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.toolbar-field input,
+.toolbar-field select {
+  background: #313244;
+  border: 1px solid #45475a;
+  border-radius: 4px;
+  color: #cdd6f4;
+  padding: 5px 8px;
+  font-size: 14px;
+  font-family: var(--note-font);
+  outline: none;
+  transition: border-color 0.15s;
+  min-width: 80px;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.toolbar-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a6adc8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 24px;
+}
+
+.toolbar-field input:focus,
+.toolbar-field select:focus {
+  border-color: #cba6f7;
+}
+
+.toolbar-field .input-sm {
+  width: 80px;
+}
+
+.toolbar-field select {
+  min-width: 120px;
+}
+
+.lang-toggle {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.lang-btn {
+  background: transparent;
+  border: 1px solid #45475a;
+  border-radius: 4px;
+  color: #a6adc8;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--ui-font);
+}
+
+.lang-btn:hover {
+  border-color: #cba6f7;
+  color: #cba6f7;
+}
+
+.lang-btn.active {
+  background: #cba6f7;
+  border-color: #cba6f7;
+  color: #1e1e2e;
+}
+
+.btn-print-float {
+  position: fixed;
+  bottom: 36px;
+  right: 36px;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #cba6f7;
+  color: #1e1e2e;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  z-index: 200;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-print-float svg {
+  width: 30px;
+  height: 30px;
+}
+
+.btn-print-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Note selector ── */
+.note-selector {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: #181825;
+  border-bottom: 2px solid #313244;
+  flex-wrap: wrap;
+}
+
+.slot-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.slot-btn {
+  background: #313244;
+  border: 1px solid #45475a;
+  border-radius: 6px;
+  color: #a6adc8;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.slot-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.slot-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.slot-hint {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.note-palette {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.note-btn {
+  width: 44px;
+  height: 44px;
+  background: #313244;
+  border: 1px solid #45475a;
+  border-radius: 6px;
+  color: #cdd6f4;
+  font-family: var(--note-font);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-btn:hover:not(:disabled) {
+  background: #45475a;
+  border-color: #cba6f7;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.note-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.note-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.note-btn-blank {
+  border-style: dashed;
+  color: #6c7086;
+  font-size: 16px;
+}
+
+.note-btn-blank:hover:not(:disabled) {
+  border-color: #89b4fa;
+  color: #89b4fa;
+  background: #313244;
+  transform: translateY(-1px);
+}
+
+.note-btn-multi {
+  font-size: 13px;
+  line-height: 1.2;
+  writing-mode: vertical-rl;
+}
+
+.selector-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.cell-info {
+  font-size: 13px;
+  color: #89b4fa;
+}
+
+.cell-info.muted {
+  color: #585b70;
+}
+
+.btn-clear {
+  background: transparent;
+  border: 1px solid #f38ba8;
+  border-radius: 6px;
+  color: #f38ba8;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-clear:hover:not(:disabled) {
+  background: #f38ba8;
+  color: #1e1e2e;
+}
+
+.btn-clear:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Cell context menu ── */
+.cell-context-menu {
+  position: fixed;
+  z-index: 300;
+  background: #1e1e2e;
+  border: 1px solid #45475a;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  color: #cdd6f4;
+  font-family: var(--ui-font);
+  font-size: 13px;
+  padding: 7px 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.context-menu-item:hover {
+  background: #313244;
+}
+
+.context-menu-item-danger {
+  color: #f38ba8;
+}
+
+.context-menu-item-danger:hover {
+  background: #3b1f24;
+}
+
+.context-menu-icon {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ── Multi-page container ── */
+.pages-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 32px;
+}
+
+.page-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-number {
+  font-family: var(--ui-font);
+  font-size: 12px;
+  color: #888;
+  padding: 4px 0 2px;
+  letter-spacing: 0.05em;
+}
+
+.btn-remove-page {
+  background: transparent;
+  border: 1px solid #f38ba8;
+  border-radius: 5px;
+  color: #f38ba8;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--ui-font);
+}
+
+.btn-remove-page:hover {
+  background: #f38ba8;
+  color: #1e1e2e;
+}
+
+.add-page-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.add-page-line {
+  flex: 1;
+  height: 2px;
+  border-top: 2px dashed #bbb;
+}
+
+.btn-add-page {
+  background: #fff;
+  border: 2px dashed #999;
+  border-radius: 6px;
+  color: #555;
+  padding: 6px 18px;
+  font-size: 14px;
+  font-family: var(--ui-font);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.btn-add-page:hover {
+  border-color: #1a56db;
+  color: #1a56db;
+  background: #e8f0fe;
+}
+
+/* ── Sheet wrapper ── */
+.sheet-wrapper {
+  flex: 1;
+  padding: 24px;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ── Kunkunshi sheet ── */
+.kunkunshi-sheet {
+  display: flex;
+  flex-direction: row;
+  border: 2px solid var(--sheet-border);
+  background: var(--sheet-bg);
+  width: fit-content;
+}
+
+/* ── Column group: notation + lyrics ── */
+.sheet-column-group {
+  display: flex;
+  flex-direction: row;
+  border-left: 2px solid var(--sheet-border);
+}
+
+/* First DOM child = leftmost visual column; its left border is the sheet's outer border */
+.sheet-column-group:first-child {
+  border-left: none;
+}
+
+/* ── Notation column ── */
+.notation-col {
+  display: flex;
+  flex-direction: column;
+  width: var(--cell-size);
+  border-right: 2px solid var(--sheet-border);
+}
+
+/* ── Individual cell ── */
+.sheet-cell {
+  position: relative;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border-bottom: 1px solid var(--sheet-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--sheet-bg);
+  transition: background 0.1s;
+  user-select: none;
+}
+
+.sheet-cell:last-child {
+  border-bottom: none;
+}
+
+.cell-action-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background: white;
+  color: #bbb;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 4;
+}
+
+.sheet-cell:hover .cell-action-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cell-action-insert {
+  top: -7px;
+}
+
+.cell-action-remove {
+  bottom: -7px;
+}
+
+@media print {
+  .cell-action-btn { display: none; }
+}
+
+.sheet-cell:hover {
+  background: #f8f8ff;
+}
+
+.sheet-cell.selected {
+  background: var(--accent-light);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+/* ── Notes inside cell ── */
+.cell-notes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  flex: 1;
+  line-height: 1;
+}
+
+.note1 {
+  font-family: var(--note-font);
+  font-size: 22px;
+  color: #111;
+  line-height: 1;
+}
+
+.note-multi {
+  writing-mode: vertical-rl;
+  font-size: 14px;
+  line-height: 1.1;
+}
+
+.note-bottom-up {
+  position: relative;
+}
+
+.note-bottom-up::after {
+  content: '¬';
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  font-size: 16px;
+  color: #111;
+  line-height: 1;
+  font-style: normal;
+}
+
+.note2 {
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--note-font);
+  font-size: 14px;
+  color: #111;
+  line-height: 1;
+  background: var(--sheet-bg);
+  padding: 0 2px;
+  z-index: 3;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: outline 0.1s;
+}
+
+.note2:hover {
+  outline: 1px solid var(--accent);
+}
+
+.note2.note2-selected {
+  outline: 2px solid var(--accent);
+  background: var(--accent-light);
+}
+
+.note-empty {
+  display: block;
+  width: 100%;
+  height: 22px;
+}
+
+/* ── Chorus markers — right side of cell ── */
+.chorus-marker {
+  position: absolute;
+  left: 100%;
+  margin-left: 2px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0;
+  color: #111;
+  z-index: 2;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.chorus-marker.visible {
+  opacity: 0.2;
+  pointer-events: auto;
+}
+
+.chorus-marker.on {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+
+.chorus-marker:hover {
+  opacity: 0.7 !important;
+}
+
+.chorus-start {
+  top: 2px;
+}
+
+.chorus-end {
+  bottom: 2px;
+}
+
+/* Print: only show active chorus markers */
+@media print {
+  .chorus-marker {
+    pointer-events: none;
+    color: #111;
+  }
+  .chorus-marker.on {
+    opacity: 1;
+  }
+  .chorus-marker:not(.on) {
+    display: none;
+  }
+}
+
+/* ── Lyrics column ── */
+.lyrics-col {
+  display: flex;
+  flex-direction: column;
+  width: var(--lyric-width);
+}
+
+.lyric-input {
+  width: var(--lyric-width);
+  height: var(--cell-size);
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background: #fafafa;
+  text-align: center;
+  font-family: var(--note-font);
+  font-size: 11px;
+  color: #333;
+  padding: 2px;
+  outline: none;
+  cursor: text;
+  writing-mode: vertical-rl;
+}
+
+.lyric-input:last-child {
+  border-bottom: none;
+}
+
+.lyric-input:focus {
+  background: #fff8e7;
+}
+
+@media print {
+  .lyric-input {
+    background: transparent;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+/* ── Metadata column ── */
+.metadata-col {
+  width: var(--meta-width);
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid var(--sheet-border);
+  background: var(--sheet-bg);
+  font-family: var(--note-font);
+}
+
+.metadata-number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px 4px;
+  font-size: 10px;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  gap: 2px;
+}
+
+.reading-arrow {
+  font-size: 14px;
+  color: #111;
+}
+
+.metadata-title {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 4px;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.title-vertical {
+  writing-mode: vertical-rl;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+
+.reading-group {
+  writing-mode: vertical-rl;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.reading-kana {
+  font-size: 10px;
+  color: #555;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.reading-romaji {
+  font-size: 9px;
+  color: #777;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.metadata-tuning {
+  padding: 6px 4px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tuning-label {
+  writing-mode: vertical-rl;
+  font-size: 13px;
+  color: #222;
+  letter-spacing: 0.1em;
+}
+
+.tuning-bracket {
+  color: #555;
+}

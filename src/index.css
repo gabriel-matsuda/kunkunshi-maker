@@ -1,0 +1,66 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --sheet-bg: #fff;
+  --sheet-border: #111;
+  --cell-size: 52px;
+  --lyric-width: 22px;
+  --meta-width: 80px;
+  --note-font: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --ui-font: system-ui, -apple-system, sans-serif;
+  --accent: #1a56db;
+  --accent-light: #e8f0fe;
+}
+
+body {
+  margin: 0;
+  background: #f0f0f0;
+  font-family: var(--ui-font);
+  color: #111;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Print: hide UI, show only sheet ── */
+@media print {
+  .no-print { display: none !important; }
+
+  body { background: white; margin: 0; }
+
+  #root { display: block; }
+
+  .app { padding: 0; }
+
+  .pages-container {
+    padding: 0;
+  }
+
+  .page-wrapper {
+    page-break-after: always;
+  }
+
+  .page-wrapper:last-child {
+    page-break-after: avoid;
+  }
+
+  .sheet-wrapper {
+    padding: 0;
+    overflow: visible;
+  }
+
+  .kunkunshi-sheet {
+    border: 2px solid #000;
+    page-break-inside: avoid;
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+}
