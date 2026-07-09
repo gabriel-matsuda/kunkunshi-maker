@@ -629,6 +629,19 @@
   bottom: 2px;
 }
 
+/* Print: suppress interactive selection styles */
+@media print {
+  .sheet-cell.selected {
+    background: transparent;
+    outline: none;
+  }
+
+  .note2.note2-selected {
+    outline: none;
+    background: transparent;
+  }
+}
+
 /* Print: only show active chorus markers */
 @media print {
   .chorus-marker {

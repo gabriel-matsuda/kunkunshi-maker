@@ -245,7 +245,7 @@ export default function App() {
               onInsertCell={handleInsertCell}
               onRemoveCell={handleRemoveCell}
             />
-            <div className="page-number">{pageIndex + 1}/{pages.length}</div>
+            <div className="page-number no-print">{pageIndex + 1}/{pages.length}</div>
             <div className="no-print add-page-row">
               <span className="add-page-line" />
               {pages.length > 1 && (
