@@ -28,6 +28,19 @@ body {
 }
 
 /* ── Print: hide UI, show only sheet ── */
+/* ── Mobile: fixed-height layout so only pages-container scrolls ── */
+@media (max-width: 768px) {
+  html, body, #root {
+    height: 100%;
+  }
+
+  .sheet-wrapper {
+    overflow: visible;
+    justify-content: flex-start;
+    padding: 12px;
+  }
+}
+
 @media print {
   .no-print { display: none !important; }
 

@@ -6,6 +6,28 @@
   gap: 0;
 }
 
+@media (max-width: 768px) {
+  .app {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sticky-ui {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .pages-container {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    width: 100%;
+    align-items: flex-start;
+  }
+}
+
 .sticky-ui {
   position: sticky;
   top: 0;
