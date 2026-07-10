@@ -5,7 +5,10 @@ import NoteSelector from './components/NoteSelector'
 import KunkunshiSheet from './components/KunkunshiSheet'
 import { useLanguage } from './i18n/LanguageContext'
 import CellContextMenu from './components/CellContextMenu'
+import { serialize as serializeToml, parse as parseToml, toSheetState } from './utils/toml'
 import './App.css'
+
+const MAX_IMPORT_BYTES = 1024 * 1024
 
 const initialSongInfo = {
   title: '',
@@ -190,6 +193,58 @@ export default function App() {
     container.scrollTop = Math.max(0, container.scrollTop + er.top - cr.top - (cr.height - er.height) / 2)
   }, [selectedCell])
 
+  const fileInputRef = useRef(null)
+
+  function slugForFilename(s) {
+    return (s || '').trim().replace(/[\s/\\:*?"<>|]+/g, '_').slice(0, 40)
+  }
+
+  function handleExport() {
+    window.gtag?.('event', 'export_toml_button_click')
+    const text = serializeToml({ songInfo, pages })
+    const blob = new Blob([text], { type: 'application/toml;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    const base = slugForFilename(songInfo.title) || 'kunkunshi'
+    a.download = `${base}.toml`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  function handleImportClick() {
+    window.gtag?.('event', 'import_toml_button_click')
+    fileInputRef.current?.click()
+  }
+
+  function handleImportFile(e) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    if (file.size > MAX_IMPORT_BYTES) {
+      window.alert(t('importTooLarge'))
+      return
+    }
+    if (!window.confirm(t('importConfirm'))) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const parsed = parseToml(String(reader.result))
+        const next = toSheetState(parsed)
+        setSongInfo(next.songInfo)
+        setPages(next.pages)
+        setSelectedCell(null)
+      } catch (err) {
+        console.error('TOML import failed:', err)
+        window.alert(t('importInvalid'))
+      }
+    }
+    reader.onerror = () => window.alert(t('importFailed'))
+    reader.readAsText(file)
+  }
+
   const [contextMenu, setContextMenu] = useState(null) // { x, y, page, col, row }
 
   function handleCellContextMenu(page, col, row, e) {
@@ -228,13 +283,36 @@ export default function App() {
           onClose={() => setContextMenu(null)}
         />
       )}
-      <button className="no-print btn-print-float" onClick={() => { window.gtag?.('event', 'print_save_pdf_button_click'); window.print(); }} title={t('printSavePdf')}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 6 2 18 2 18 9"/>
-          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-          <rect x="6" y="14" width="12" height="8"/>
-        </svg>
-      </button>
+      <div className="no-print btn-float-group">
+        <button className="btn-float btn-float-secondary" onClick={handleImportClick} title={t('importToml')} aria-label={t('importToml')}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </button>
+        <button className="btn-float btn-float-secondary" onClick={handleExport} title={t('exportToml')} aria-label={t('exportToml')}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <button className="btn-float btn-print-float" onClick={() => { window.gtag?.('event', 'print_save_pdf_button_click'); window.print(); }} title={t('printSavePdf')} aria-label={t('printSavePdf')}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+        </button>
+      </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".toml,application/toml,text/plain"
+        style={{ display: 'none' }}
+        onChange={handleImportFile}
+      />
       <div className="no-print sticky-ui">
         <Toolbar songInfo={songInfo} onChange={handleSongInfoChange} />
         <NoteSelector
