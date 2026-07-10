@@ -1,16 +1,38 @@
+import { useState } from 'react'
 import { TUNINGS } from '../data/notes'
 import { useLanguage } from '../i18n/LanguageContext'
 import { LANGUAGES } from '../i18n/translations'
 
 export default function Toolbar({ songInfo, onChange }) {
   const { lang, setLang, t } = useLanguage()
+  const [fieldsOpen, setFieldsOpen] = useState(false)
 
   return (
     <header className="toolbar">
       <div className="toolbar-title">
         <span className="toolbar-brand">工工四 Maker</span>
+        <button
+          className="toolbar-toggle-btn"
+          onClick={() => setFieldsOpen(o => !o)}
+          aria-label={fieldsOpen ? t('hideFields') : t('showFields')}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ transform: fieldsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
       </div>
-      <div className="toolbar-fields">
+      <div className={`toolbar-fields${fieldsOpen ? '' : ' toolbar-fields-hidden'}`}>
         <label className="toolbar-field">
           <span>{t('title')}</span>
           <input

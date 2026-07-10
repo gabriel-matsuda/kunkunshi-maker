@@ -49,6 +49,12 @@
   flex-wrap: wrap;
 }
 
+.toolbar-title {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .toolbar-brand {
   font-size: 18px;
   font-weight: 700;
@@ -62,6 +68,36 @@
   gap: 14px;
   flex-wrap: wrap;
   flex: 1;
+}
+
+.toolbar-toggle-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid #45475a;
+  border-radius: 4px;
+  color: #a6adc8;
+  padding: 4px 6px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+  margin-left: 8px;
+}
+
+.toolbar-toggle-btn:hover {
+  border-color: #cba6f7;
+  color: #cba6f7;
+}
+
+@media (max-width: 768px) {
+  .toolbar-toggle-btn {
+    display: flex;
+  }
+
+  .toolbar-fields-hidden {
+    display: none;
+  }
 }
 
 .toolbar-field {

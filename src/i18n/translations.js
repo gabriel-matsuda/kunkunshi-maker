@@ -31,6 +31,8 @@ export const translations = {
     insertCell: 'Insert cell here',
     removeCell: 'Remove cell here',
     bottomUpStroke: 'Bottom-up stroke',
+    hideFields: 'Hide fields',
+    showFields: 'Show fields',
   },
   pt: {
     songNumber: 'Número da música',
@@ -54,6 +56,8 @@ export const translations = {
     insertCell: 'Inserir célula aqui',
     removeCell: 'Remover célula aqui',
     bottomUpStroke: 'Ascendente',
+    hideFields: 'Ocultar campos',
+    showFields: 'Mostrar campos',
   },
   es: {
     songNumber: 'Número de canción',
@@ -77,6 +81,8 @@ export const translations = {
     insertCell: 'Insertar celda aquí',
     removeCell: 'Eliminar celda aquí',
     bottomUpStroke: 'Ascendente',
+    hideFields: 'Ocultar campos',
+    showFields: 'Mostrar campos',
   },
   jp: {
     songNumber: '曲番号',
@@ -100,5 +106,7 @@ export const translations = {
     insertCell: 'ここにセルを挿入',
     removeCell: 'このセルを削除',
     bottomUpStroke: '上弾き',
+    hideFields: 'フィールドを隠す',
+    showFields: 'フィールドを表示',
   },
 }
