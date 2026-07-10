@@ -1,18 +1,12 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 
-export default function SheetCell({ cell, isSelected, note2Active, onClick, onNote2Click, onChorusToggle, onContextMenu, onInsertCell, onRemoveCell }) {
+export default function SheetCell({ colIndex, rowIndex, cell, isSelected, note2Active, onClick, onNote2Click, onChorusToggle, onContextMenu, onInsertCell, onRemoveCell }) {
   const [hovered, setHovered] = useState(false)
-  const cellRef = useRef(null)
-
-  useEffect(() => {
-    if (isSelected && cellRef.current && window.matchMedia('(max-width: 768px)').matches) {
-      cellRef.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
-    }
-  }, [isSelected])
 
   return (
     <div
-      ref={cellRef}
+      data-col={colIndex}
+      data-row={rowIndex}
       className={`sheet-cell ${isSelected && !note2Active ? 'selected' : ''} ${hovered ? 'hovered' : ''}`}
       onClick={onClick}
       onContextMenu={onContextMenu}

@@ -8,6 +8,8 @@ export default function SheetColumn({ colIndex, column, selectedCell, activeSlot
         {column.cells.map((cell, rowIndex) => (
           <SheetCell
             key={rowIndex}
+            colIndex={colIndex}
+            rowIndex={rowIndex}
             cell={cell}
             isSelected={selectedCell?.col === colIndex && selectedCell?.row === rowIndex}
             note2Active={selectedCell?.col === colIndex && selectedCell?.row === rowIndex && activeSlot === 'note2'}

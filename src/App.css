@@ -26,6 +26,10 @@
     width: 100%;
     align-items: flex-start;
   }
+
+  .page-wrapper {
+    align-items: flex-start;
+  }
 }
 
 .sticky-ui {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { makeEmptySheet, COLS, ROWS } from './data/notes'
 import Toolbar from './components/Toolbar'
 import NoteSelector from './components/NoteSelector'
@@ -166,6 +166,18 @@ export default function App() {
     )
   }
 
+  const pagesContainerRef = useRef(null)
+
+  useEffect(() => {
+    if (!selectedCell || !pagesContainerRef.current) return
+    if (!window.matchMedia('(max-width: 768px)').matches) return
+    const container = pagesContainerRef.current
+    const pageEl = container.querySelector(`[data-page="${selectedCell.page}"]`)
+    const cellEl = pageEl?.querySelector(`[data-col="${selectedCell.col}"][data-row="${selectedCell.row}"]`)
+    if (!cellEl) return
+    cellEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+  }, [selectedCell])
+
   const [contextMenu, setContextMenu] = useState(null) // { x, y, page, col, row }
 
   function handleCellContextMenu(page, col, row, e) {
@@ -227,9 +239,9 @@ export default function App() {
           columns={activeColumns}
         />
       </div>
-      <div className="pages-container">
+      <div className="pages-container" ref={pagesContainerRef}>
         {pages.map((columns, pageIndex) => (
-          <div key={pageIndex} className="page-wrapper">
+          <div key={pageIndex} className="page-wrapper" data-page={pageIndex}>
             <KunkunshiSheet
               pageIndex={pageIndex}
               columns={columns}
