@@ -34,12 +34,6 @@ body {
     height: 100%;
   }
 
-  .sheet-wrapper {
-    overflow-x: auto;
-    justify-content: flex-start;
-    padding: 12px;
-    width: 100%;
-  }
 }
 
 @media print {

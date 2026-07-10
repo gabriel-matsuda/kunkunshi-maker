@@ -181,8 +181,13 @@ export default function App() {
     const container = pagesContainerRef.current
     const pageEl = container.querySelector(`[data-page="${selectedCell.page}"]`)
     const cellEl = pageEl?.querySelector(`[data-col="${selectedCell.col}"][data-row="${selectedCell.row}"]`)
-    if (!cellEl) return
-    cellEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+    const sheetWrapper = pageEl?.querySelector('.sheet-wrapper')
+    if (!cellEl || !sheetWrapper) return
+    const er = cellEl.getBoundingClientRect()
+    const sr = sheetWrapper.getBoundingClientRect()
+    const cr = container.getBoundingClientRect()
+    sheetWrapper.scrollLeft = Math.max(0, sheetWrapper.scrollLeft + er.left - sr.left - (sr.width - er.width) / 2)
+    container.scrollTop = Math.max(0, container.scrollTop + er.top - cr.top - (cr.height - er.height) / 2)
   }, [selectedCell])
 
   const [contextMenu, setContextMenu] = useState(null) // { x, y, page, col, row }

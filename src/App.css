@@ -30,6 +30,7 @@
   .page-wrapper {
     align-items: flex-start;
   }
+
 }
 
 .sticky-ui {
@@ -478,6 +479,14 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+  .sheet-wrapper {
+    justify-content: flex-start;
+    padding: 12px;
+    width: 100%;
+  }
 }
 
 /* ── Kunkunshi sheet ── */
