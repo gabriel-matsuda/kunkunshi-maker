@@ -87,21 +87,28 @@ export default function App() {
   function handleSkipCell() {
     if (!selectedCell) return
     const { page, col, row } = selectedCell
-    setSelectedCell(advanceSelection(page, col, row))
+    const nextSel = advanceSelection(page, col, row)
+    if (nextSel === null) {
+      setPages(prev => [...prev, makeEmptySheet()])
+      setSelectedCell({ page: page + 1, col: 0, row: 0 })
+    } else {
+      setSelectedCell(nextSel)
+    }
     setActiveSlot('note1')
   }
 
   function handleNoteClick(char) {
     if (!selectedCell) return
     const { page, col, row } = selectedCell
+    const nextSel = advanceSelection(page, col, row)
     setPages(prev => {
-      const next = prev.map((pageColumns, pIdx) =>
+      const updated = prev.map((pageColumns, pIdx) =>
         pIdx === page ? clonePage(pageColumns) : pageColumns
       )
-      next[page][col].cells[row][activeSlot] = char
-      return next
+      updated[page][col].cells[row][activeSlot] = char
+      return nextSel === null ? [...updated, makeEmptySheet()] : updated
     })
-    setSelectedCell(advanceSelection(page, col, row))
+    setSelectedCell(nextSel ?? { page: page + 1, col: 0, row: 0 })
     setActiveSlot('note1')
   }
 
