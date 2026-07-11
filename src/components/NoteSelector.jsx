@@ -1,22 +1,23 @@
 import { NOTES } from '../data/notes'
 import { useLanguage } from '../i18n/LanguageContext'
 
-export default function NoteSelector({ activeSlot, onSlotChange, onNoteClick, onSkip, onClear, onBottomUpToggle, selectedCell, columns }) {
+export default function NoteSelector({ activeSlot, onSlotChange, onNoteClick, onSkip, onClear, onBottomUpToggle, pendingBottomUp, selectedCell, columns }) {
   const { t } = useLanguage()
 
   const cell = selectedCell ? columns[selectedCell.col]?.cells[selectedCell.row] : null
   const hasNote1 = !!cell?.note1
   const hasNote2 = !!cell?.note2
-  const isBottomUp = activeSlot === 'note1' ? !!cell?.bottomUp1 : !!cell?.bottomUp2
-  const canToggleBottomUp = activeSlot === 'note1' ? hasNote1 : hasNote2
+  const storedBottomUp = activeSlot === 'note1' ? !!cell?.bottomUp1 : !!cell?.bottomUp2
+  const hasNoteForSlot = activeSlot === 'note1' ? hasNote1 : hasNote2
+  const bottomUpActive = hasNoteForSlot ? storedBottomUp : pendingBottomUp
 
   return (
     <div className="note-selector">
       <div className="slot-toggle">
         <button
-          className={`slot-btn slot-btn-accent ${isBottomUp ? 'active' : ''}`}
+          className={`slot-btn slot-btn-accent ${bottomUpActive ? 'active' : ''}`}
           onClick={onBottomUpToggle}
-          disabled={!canToggleBottomUp}
+          disabled={!selectedCell}
           title={t('bottomUpStroke')}
         >
           ¬

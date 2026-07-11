@@ -61,6 +61,7 @@ export default function App() {
   const [pages, setPages] = useState([makeEmptySheet()])
   const [selectedCell, setSelectedCell] = useState({ page: 0, col: 0, row: 0 })
   const [activeSlot, setActiveSlot] = useState('note1')
+  const [pendingBottomUp, setPendingBottomUp] = useState(false)
 
   function handleSongInfoChange(field, value) {
     setSongInfo(prev => ({ ...prev, [field]: value }))
@@ -73,11 +74,18 @@ export default function App() {
         : { page, col, row }
     )
     setActiveSlot('note1')
+    setPendingBottomUp(false)
   }
 
   function handleNote2Select(page, col, row) {
     setSelectedCell({ page, col, row })
     setActiveSlot('note2')
+    setPendingBottomUp(false)
+  }
+
+  function handleSlotChange(slot) {
+    setActiveSlot(slot)
+    setPendingBottomUp(false)
   }
 
   function advanceSelection(page, col, row) {
@@ -104,15 +112,18 @@ export default function App() {
     if (!selectedCell) return
     const { page, col, row } = selectedCell
     const nextSel = advanceSelection(page, col, row)
+    const flag = activeSlot === 'note1' ? 'bottomUp1' : 'bottomUp2'
     setPages(prev => {
       const updated = prev.map((pageColumns, pIdx) =>
         pIdx === page ? clonePage(pageColumns) : pageColumns
       )
       updated[page][col].cells[row][activeSlot] = char
+      if (pendingBottomUp) updated[page][col].cells[row][flag] = true
       return nextSel === null ? [...updated, makeEmptySheet()] : updated
     })
     setSelectedCell(nextSel ?? { page: page + 1, col: 0, row: 0 })
     setActiveSlot('note1')
+    setPendingBottomUp(false)
   }
 
   function handleClearCell() {
@@ -317,14 +328,22 @@ export default function App() {
         <Toolbar songInfo={songInfo} onChange={handleSongInfoChange} />
         <NoteSelector
           activeSlot={activeSlot}
-          onSlotChange={setActiveSlot}
+          onSlotChange={handleSlotChange}
           onNoteClick={handleNoteClick}
           onSkip={handleSkipCell}
           onClear={handleClearCell}
           onBottomUpToggle={() => {
             if (!selectedCell) return
-            handleBottomUpToggle(selectedCell.page, selectedCell.col, selectedCell.row)
+            const { page, col, row } = selectedCell
+            const cell = pages[page][col].cells[row]
+            const hasNote = activeSlot === 'note1' ? !!cell.note1 : !!cell.note2
+            if (hasNote) {
+              handleBottomUpToggle(page, col, row)
+            } else {
+              setPendingBottomUp(v => !v)
+            }
           }}
+          pendingBottomUp={pendingBottomUp}
           selectedCell={selectedCell}
           columns={activeColumns}
         />
