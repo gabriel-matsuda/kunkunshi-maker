@@ -6,6 +6,7 @@ import KunkunshiSheet from './components/KunkunshiSheet'
 import { useLanguage } from './i18n/LanguageContext'
 import CellContextMenu from './components/CellContextMenu'
 import { serialize as serializeToml, parse as parseToml, toSheetState } from './utils/toml'
+import { encodeShareData, decodeShareData, buildShareUrl, readShareFromLocation, clearShareFromLocation } from './utils/share'
 import './App.css'
 
 const MAX_IMPORT_BYTES = 1024 * 1024
@@ -204,6 +205,53 @@ export default function App() {
     container.scrollTop = Math.max(0, container.scrollTop + er.top - cr.top - (cr.height - er.height) / 2)
   }, [selectedCell])
 
+  useEffect(() => {
+    const encoded = readShareFromLocation()
+    if (!encoded) return
+    let cancelled = false
+    decodeShareData(encoded)
+      .then(next => {
+        if (cancelled) return
+        setSongInfo(next.songInfo)
+        setPages(next.pages)
+        setSelectedCell(null)
+        clearShareFromLocation()
+      })
+      .catch(err => {
+        console.error('Share decode failed:', err)
+        window.alert(t('shareLoadFailed'))
+        clearShareFromLocation()
+      })
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  async function handleShare() {
+    window.gtag?.('event', 'share_button_click')
+    try {
+      const encoded = await encodeShareData({ songInfo, pages })
+      const url = buildShareUrl(encoded)
+      const shareData = { title: songInfo.title || 'Kunkunshi', url }
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData)
+          return
+        } catch (err) {
+          if (err?.name === 'AbortError') return
+        }
+      }
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url)
+        window.alert(t('shareCopied'))
+      } else {
+        window.prompt(t('shareCopyPrompt'), url)
+      }
+    } catch (err) {
+      console.error('Share failed:', err)
+      window.alert(t('shareFailed'))
+    }
+  }
+
   const fileInputRef = useRef(null)
 
   function slugForFilename(s) {
@@ -307,6 +355,15 @@ export default function App() {
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <button className="btn-float btn-float-secondary" onClick={handleShare} title={t('share')} aria-label={t('share')}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
           </svg>
         </button>
         <button className="btn-float btn-print-float" onClick={() => { window.gtag?.('event', 'print_save_pdf_button_click'); window.print(); }} title={t('printSavePdf')} aria-label={t('printSavePdf')}>
